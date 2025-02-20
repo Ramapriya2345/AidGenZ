@@ -1,0 +1,135 @@
+/* Copy all styles from OrphanageAuth.css and paste them here */
+/* The styles are identical, so you can use the same CSS */
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.submit-button.loading {
+  background: #2980b9;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.submit-button:disabled {
+  cursor: not-allowed;
+}
+
+/* Optional: Add loading overlay */
+.auth-content.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.auth-container {
+  padding-top: 80px; /* Add space for navbar */
+  min-height: 100vh;
+}
+
+.step-indicators {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.step-indicator {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #eee;
+  margin: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ddd;
+}
+
+.step-indicator.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.step-indicator.completed {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.form-step {
+  display: none;
+}
+
+.form-step.active {
+  display: block;
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.step-button {
+  padding: 10px 25px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.step-button.prev {
+  background: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.step-button.next {
+  background: #007bff;
+  color: white;
+}
+
+.step-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.step-progress {
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.step-title {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1rem;
+  text-align: center;
+}

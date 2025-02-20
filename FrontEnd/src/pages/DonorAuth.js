@@ -1,183 +1,318 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate, NavLink, Link } from "react-router-dom";
+import "../CSS/Auth.css";  // Update this line
 
 const DonorAuth = () => {
+  const [isRegister, setIsRegister] = useState(true);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    location: '',
-    phoneNo: '', // Add phoneNo field here
+    name: "",
+    email: "",
+    password: "",
+    location: "",
+    phoneNo: "",
     profileImage: null,
   });
-  const [error, setError] = useState(null);
-  const [isRegistering, setIsRegistering] = useState(true); // True for register, False for login
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      profileImage: e.target.files[0],
-    });
+    const { name, files } = e.target;
+    setFormData({ ...formData, [name]: files[0] });
+  };
+
+  const nextStep = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const prevStep = () => {
+    setCurrentStep(currentStep - 1);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsLoading(true);
+    const apiUrl = isRegister 
+      ? "http://localhost:5000/api/donor/register" 
+      : "http://localhost:5000/api/donor/login";
+    
+    let formDataToSend;
 
-    if (isRegistering) {
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('password', formData.password);
-      formDataToSend.append('location', formData.location);
-      formDataToSend.append('phoneNo', formData.phoneNo); // Add phoneNo field here
-      formDataToSend.append('profileImage', formData.profileImage);
-
-      try {
-        const response = await axios.post('http://localhost:5000/api/donor/register', formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        alert(response.data.message);
-        navigate('/donor-profile'); // Redirect after successful registration
-      } catch (error) {
-        setError(error.response?.data?.message || 'Something went wrong');
+    if (isRegister) {
+      formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        if (key !== "profileImage") {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+      if (formData.profileImage) {
+        formDataToSend.append("profileImage", formData.profileImage);
       }
     } else {
-      try {
-        const response = await axios.post('http://localhost:5000/api/donor/login', {
-          email: formData.email,
-          password: formData.password,
-        });
-        alert(response.data.message);
-        
-        // Save the JWT token in localStorage for further authenticated requests
-        localStorage.setItem('authToken', response.data.token);
-        
-        // Redirect after successful login
-        navigate('/donor-profile');
-      } catch (error) {
-        setError(error.response?.data?.message || 'Something went wrong');
+      formDataToSend = {
+        email: formData.email,
+        password: formData.password,
+      };
+    }
+
+    try {
+      const response = await axios.post(apiUrl, formDataToSend, {
+        headers: isRegister
+          ? { "Content-Type": "multipart/form-data" }
+          : { "Content-Type": "application/json" },
+      });
+      if (!isRegister) {
+        localStorage.setItem("authToken", response.data.token);
       }
+      alert(response.data.message);
+      navigate("/donor-profile");
+    } catch (error) {
+      setError(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleForgotPassword = () => {
-    // Navigate to the Forgot Password page
-    navigate('/reset-password');
-  };
+  const renderFormStep = () => {
+    if (!isRegister) {
+      return (
+        <div className="form-step active">
+          <div className="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="e.g., john@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+      );
+    }
 
-  return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="w-100" style={{ maxWidth: '400px' }}>
-        <div className="p-4 bg-white rounded shadow-sm">
-          <h2 className="text-center mb-4">{isRegistering ? 'Donor Register' : 'Donor Login'}</h2>
-          {error && <p className="text-danger text-center">{error}</p>}
-          <form onSubmit={handleSubmit}>
-            {isRegistering && (
-              <div className="mb-3">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Full Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="form-control"
-                />
-              </div>
-            )}
-            <div className="mb-3">
+    switch(currentStep) {
+      case 1:
+        return (
+          <div className="form-step active">
+            <div className="form-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="e.g., John Doe"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Email Address</label>
               <input
                 type="email"
                 name="email"
-                placeholder="Email"
+                placeholder="e.g., john@example.com"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="form-control"
               />
             </div>
-            <div className="mb-3">
+          </div>
+        );
+      case 2:
+        return (
+          <div className="form-step active">
+            <div className="form-group">
+              <label>Password</label>
               <input
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Enter a secure password"
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="form-control"
               />
             </div>
+            <div className="form-group">
+              <label>Location</label>
+              <input
+                type="text"
+                name="location"
+                placeholder="e.g., Chennai, Tamil Nadu"
+                value={formData.location}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+        );
+      case 3:
+        return (
+          <div className="form-step active">
+            <div className="form-group">
+              <label>Phone Number</label>
+              <input
+                type="tel"
+                name="phoneNo"
+                placeholder="e.g., 9876543210"
+                value={formData.phoneNo}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Profile Picture</label>
+              <input
+                type="file"
+                name="profileImage"
+                onChange={handleFileChange}
+                accept="image/*"
+              />
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
-            {isRegistering && (
-              <>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    name="location"
-                    placeholder="Location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    required
-                    className="form-control"
-                  />
+  return (
+    <>
+      {/* Navigation Bar */}
+      <nav className="navbar navbar-expand-lg fixed-top custom-navbar">
+        <div className="container">
+          <Link className="navbar-brand fw-bold" to="/">
+            <span className="brand-text">Aid</span>
+            <span className="brand-text-highlight">GenZ</span>
+          </Link>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">Home</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/about">About Us</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/contact">Contact</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="auth-container">
+        <div className="auth-content">
+          <div className="auth-header">
+            <h1>{isRegister ? "Join as a Donor" : "Welcome Back!"}</h1>
+            <p className="auth-subtitle">
+              {isRegister 
+                ? "Start your journey of making a difference in children's lives" 
+                : "Continue your mission of helping others"}
+            </p>
+          </div>
+
+          {error && <div className="error-message">{error}</div>}
+
+          {isRegister && (
+            <div className="step-indicators">
+              {[1, 2, 3].map((step) => (
+                <div
+                  key={step}
+                  className={`step-indicator ${
+                    step === currentStep ? 'active' : ''
+                  } ${step < currentStep ? 'completed' : ''}`}
+                >
+                  {step}
                 </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    name="phoneNo"
-                    placeholder="Phone Number"
-                    value={formData.phoneNo}
-                    onChange={handleChange}
-                    required
-                    className="form-control"
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="file"
-                    name="profileImage"
-                    onChange={handleFileChange}
-                    required
-                    className="form-control"
-                  />
-                </div>
-              </>
-            )}
-
-            <button type="submit" className="btn btn-primary w-100">
-              {isRegistering ? 'Register' : 'Login'}
-            </button>
-          </form>
-
-          <p className="text-center mt-3">
-            {isRegistering ? 'Already have an account?' : 'Don\'t have an account?'}
-            <button onClick={() => setIsRegistering(!isRegistering)} className="btn btn-link">
-              {isRegistering ? 'Login here' : 'Register here'}
-            </button>
-          </p>
-
-          {/* Forgot Password button */}
-          {!isRegistering && (
-            <div className="text-center">
-              <button onClick={handleForgotPassword} className="btn btn-link">
-                Forgot Password?
-              </button>
+              ))}
             </div>
           )}
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            {renderFormStep()}
+
+            <div className="step-buttons">
+              {isRegister && currentStep > 1 && (
+                <button 
+                  type="button" 
+                  onClick={prevStep}
+                  className="btn-modern secondary"
+                >
+                  <span>←</span>
+                  <span>Previous</span>
+                </button>
+              )}
+              {isRegister && currentStep < 3 ? (
+                <button 
+                  type="button" 
+                  onClick={nextStep}
+                  className="btn-modern primary"
+                >
+                  <span>Next</span>
+                  <span>→</span>
+                </button>
+              ) : (
+                <button 
+                  type="submit" 
+                  className={`btn-modern primary ${isLoading ? 'loading' : ''}`}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="button-content">
+                      <span className="spinner"></span>
+                      <span>{isRegister ? "Registering..." : "Logging in..."}</span>
+                    </div>
+                  ) : (
+                    isRegister ? "Start Donating" : "Login"
+                  )}
+                </button>
+              )}
+            </div>
+
+          </form>
+
+          <div className="auth-footer">
+            <p>
+              {isRegister ? "Already a donor?" : "New to our platform?"}
+              <button 
+                onClick={() => {
+                  setIsRegister(!isRegister);
+                  setCurrentStep(1);
+                }}
+                className="toggle-button"
+              >
+                {isRegister ? "Login here" : "Register here"}
+              </button>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

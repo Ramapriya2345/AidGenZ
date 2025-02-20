@@ -1,17 +1,22 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../CSS/Auth.css";  // Update this line
 
 const OrphanageAuth = () => {
   const [isRegister, setIsRegister] = useState(true);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     location: "",
     phoneNo: "",
-    profileImage: null,
-    proof: null,
+    description: "",
+    requirements: "",
+    documents: null,
+    profileImage: null
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -29,17 +34,21 @@ const OrphanageAuth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    const apiUrl = isRegister ? "http://localhost:5000/api/orphanage/register" : "http://localhost:5000/api/orphanage/login";
+    setIsLoading(true);
+    const apiUrl = isRegister 
+      ? "http://localhost:5000/api/orphanage/register" 
+      : "http://localhost:5000/api/orphanage/login";
+    
     let formDataToSend;
 
     if (isRegister) {
       formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
-        if (key !== "profileImage" && key !== "proof") {
+        if (key !== "profileImage" && key !== "documents") {
           formDataToSend.append(key, formData[key]);
         }
       });
-      const images = [formData.profileImage, formData.proof];
+      const images = [formData.profileImage, formData.documents];
       images.forEach((image, index) => {
         if (image) {
           formDataToSend.append("images", image);
@@ -65,63 +74,292 @@ const OrphanageAuth = () => {
       navigate("/orphanage-profile");
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getStepTitle = (step) => {
+    switch(step) {
+      case 1: return "Basic Information";
+      case 2: return "Contact Details";
+      case 3: return "Organization Details";
+      case 4: return "Documentation";
+      default: return "";
+    }
+  };
+
+  const renderFormStep = () => {
+    if (!isRegister) {
+      return (
+        <div className="form-step active">
+          <div className="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="orphanage@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+      );
+    }
+
+    switch(currentStep) {
+      case 1:
+        return (
+          <div className="form-step active">
+            <div className="form-group">
+              <label>Orphanage Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Email Address</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="form-step active">
+            <div className="form-group">
+              <label>Location</label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Phone Number</label>
+              <input
+                type="tel"
+                name="phoneNo"
+                value={formData.phoneNo}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="form-step active">
+            <div className="form-group">
+              <label>Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Tell us about your orphanage..."
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Requirements</label>
+              <textarea
+                name="requirements"
+                value={formData.requirements}
+                onChange={handleChange}
+                placeholder="List your current needs..."
+                required
+              />
+            </div>
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="form-step active">
+            <div className="form-group">
+              <label>Legal Documents</label>
+              <input
+                type="file"
+                name="documents"
+                onChange={handleFileChange}
+                accept=".pdf,.doc,.docx"
+                required
+              />
+              <small>Upload registration certificate or legal documents</small>
+            </div>
+            <div className="form-group">
+              <label>Profile Image</label>
+              <input
+                type="file"
+                name="profileImage"
+                onChange={handleFileChange}
+                accept="image/*"
+              />
+              <small>Upload a photo of your orphanage</small>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="w-100" style={{ maxWidth: '400px' }}>
-        <div className="p-4 bg-white rounded shadow-sm">
-          <h2 className="text-center mb-4">
-            {isRegister ? "Orphanage Register" : "Orphanage Login"}
-          </h2>
-          {error && <p className="text-danger text-center">{error}</p>}
-          <form onSubmit={handleSubmit}>
-            {isRegister && (
-              <div className="mb-3">
-                <input type="text" name="name" placeholder="Orphanage Name" value={formData.name} onChange={handleChange} required className="form-control" />
+    <>
+      {/* Navigation Bar */}
+      <nav className="navbar navbar-expand-lg fixed-top custom-navbar">
+        <div className="container">
+          <Link className="navbar-brand fw-bold" to="/">
+            <span className="brand-text">Aid</span>
+            <span className="brand-text-highlight">GenZ</span>
+          </Link>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">Home</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/about">About Us</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/contact">Contact</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="auth-container">
+        <div className="auth-content">
+          <div className="auth-header">
+            <h1>{isRegister ? "Register Your Orphanage" : "Welcome Back!"}</h1>
+            <p className="auth-subtitle">
+              {isRegister 
+                ? "Join our platform to connect with donors and make a difference" 
+                : "Login to manage your orphanage profile and donations"}
+            </p>
+          </div>
+
+          {error && <div className="error-message">{error}</div>}
+
+          {isRegister && (
+            <>
+              <div className="step-indicators">
+                {[1, 2, 3, 4].map((step) => (
+                  <div
+                    key={step}
+                    className={`step-indicator ${
+                      step === currentStep ? 'active' : ''
+                    } ${step < currentStep ? 'completed' : ''}`}
+                  >
+                    {step}
+                  </div>
+                ))}
               </div>
-            )}
-            <div className="mb-3">
-              <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required className="form-control" />
-            </div>
-            <div className="mb-3">
-              <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required className="form-control" />
-            </div>
-            {!isRegister && (
-              <div className="text-center mb-3">
-                <NavLink to="/reset-password" className="text-primary">Forgot Password?</NavLink>
+              <div className="step-progress">
+                <h3 className="step-title">{getStepTitle(currentStep)}</h3>
               </div>
-            )}
-            {isRegister && (
-              <>
-                <div className="mb-3">
-                  <input type="text" name="location" placeholder="Location" value={formData.location} onChange={handleChange} required className="form-control" />
-                </div>
-                <div className="mb-3">
-                  <input type="text" name="phoneNo" placeholder="Phone Number" value={formData.phoneNo} onChange={handleChange} required className="form-control" />
-                </div>
-                <div className="mb-3">
-                  <input type="file" name="profileImage" onChange={handleFileChange} required className="form-control" />
-                </div>
-                <div className="mb-3">
-                  <input type="file" name="proof" onChange={handleFileChange} required className="form-control" />
-                </div>
-              </>
-            )}
-            <button type="submit" className="btn btn-primary w-100">
-              {isRegister ? "Register" : "Login"}
-            </button>
+            </>
+          )}
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            {renderFormStep()}
+
+            <div className="step-buttons">
+              {isRegister && currentStep > 1 && (
+                <button 
+                  type="button" 
+                  onClick={() => setCurrentStep(prev => prev - 1)}
+                  className="step-button prev"
+                >
+                  ← Previous
+                </button>
+              )}
+              
+              {isRegister && currentStep < 4 ? (
+                <button 
+                  type="button" 
+                  onClick={() => setCurrentStep(prev => prev + 1)}
+                  className="step-button next"
+                >
+                  Next →
+                </button>
+              ) : (
+                <button 
+                  type="submit"
+                  className={`step-button next ${isLoading ? 'loading' : ''}`}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="button-content">
+                      <span className="spinner"></span>
+                      <span>{isRegister ? "Registering..." : "Logging in..."}</span>
+                    </div>
+                  ) : (
+                    isRegister ? "Complete Registration" : "Login"
+                  )}
+                </button>
+              )}
+            </div>
           </form>
-          <p className="text-center mt-3">
-            {isRegister ? "Already have an account?" : "Don't have an account?"}
-            <button onClick={() => setIsRegister(!isRegister)} className="btn btn-link">
-              {isRegister ? "Login" : "Register"}
-            </button>
-          </p>
+
+          <div className="auth-footer">
+            <p>
+              {isRegister ? "Already registered?" : "New to our platform?"}
+              <button 
+                onClick={() => {
+                  setIsRegister(!isRegister);
+                  setCurrentStep(1);
+                }}
+                className="toggle-button"
+              >
+                {isRegister ? "Login here" : "Register here"}
+              </button>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

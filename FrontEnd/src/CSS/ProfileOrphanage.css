@@ -1,0 +1,576 @@
+/* Modern gradient backgrounds and animations */
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.profile-header-section {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.profile-cover-image {
+  height: 250px;
+  background: linear-gradient(45deg, #B3A7D1, #6366f1, #8b5cf6);
+  background-size: 200% 200%;
+  animation: gradientFlow 15s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+.profile-header-content {
+  display: flex;
+  padding: 20px;
+  margin-top: -60px;
+}
+
+.profile-header {
+  font-size: 2rem;
+  color: #4a90e2; /* Primary color */
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info {
+  margin-left: 24px;
+  padding-top: 40px;
+}
+
+.profile-info h4 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.profile-info p {
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+}
+
+/* Grid Layout */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* Donations Section */
+.donations-section, .requests-section {
+  margin-top: 2rem;
+}
+
+/* Scrolling text banner */
+.donation-banner {
+  position: relative;
+  overflow: hidden;
+  height: 40px;
+  background: rgba(99, 102, 241, 0.1);
+  margin: 20px 0;
+  border-radius: 10px;
+}
+
+.scrolling-text {
+  position: absolute;
+  white-space: nowrap;
+  animation: scroll 20s linear infinite;
+  color: #6366f1;
+  font-weight: 500;
+  padding: 10px 0;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.section-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 4px;
+  background: linear-gradient(180deg, #6366f1, #8b5cf6);
+  border-radius: 4px;
+}
+
+.donations-section h5, .requests-section h5 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.donation-cards, .request-cards {
+  display: grid;
+  gap: 16px;
+}
+
+.donation-list, .request-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* Modern card designs */
+.donation-card, .request-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.donation-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.donation-card:hover::before {
+  transform: scaleX(1);
+}
+
+.donation-item, .request-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff; /* White background for cards */
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.donation-image {
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.donation-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.donation-item img {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+}
+
+.no-image {
+  width: 100px;
+  height: 100px;
+  background: #eaeaea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.donation-details {
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.complete-donation-button {
+  background: #4a90e2; /* Primary color */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.complete-donation-button:hover {
+  background: #357abd; /* Darker shade on hover */
+}
+
+/* Modern buttons with hover effects */
+.button-primary {
+  background: linear-gradient(45deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.2);
+}
+
+.button-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255,255,255,0.1);
+  transform: rotate(45deg);
+  animation: buttonGlow 3s infinite;
+}
+
+@keyframes buttonGlow {
+  0% { transform: rotate(45deg) translateX(-100%); }
+  100% { transform: rotate(45deg) translateX(100%); }
+}
+
+.button-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.button-delete:hover {
+  background: #dc2626;
+}
+
+/* Requests Section */
+.request-item p {
+  font-weight: bold;
+  color: #333;
+}
+
+.request-item button {
+  background: #e74c3c; /* Danger color */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.request-item button:hover {
+  background: #c0392b; /* Darker shade on hover */
+}
+
+/* Loading and Error States */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  text-align: center;
+  color: #e74c3c; /* Error color */
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+/* Empty state enhancement */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-radius: 16px;
+  border: 2px dashed #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.empty-state:hover {
+  border-color: #6366f1;
+  transform: scale(1.02);
+}
+
+.modern-profile {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-hero {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 20px;
+  padding: 60px 20px;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.hero-content {
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  border: 4px solid white;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.contact-info span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stats-banner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-item {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.stat-item h3 {
+  font-size: 2rem;
+  color: #6366f1;
+  margin: 0;
+}
+
+.content-sections {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.modern-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.card-image {
+  height: 200px;
+  background: #f3f4f6;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.modern-button {
+  display: inline-block;
+  background: #6366f1;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.modern-button:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+}
+
+.requests-list {
+  display: grid;
+  gap: 15px;
+}
+
+.request-item {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.delete-button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+  background: #dc2626;
+}
+
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+}
+
+.loader {
+  border: 3px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 3px solid #6366f1;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.auth-message {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.auth-icon {
+  font-size: 48px;
+  color: #6366f1;
+  margin-bottom: 20px;
+}
+
+.auth-button {
+  display: inline-block;
+  background: #6366f1;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: all 0.2s ease;
+}
+
+.auth-button:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .contact-info {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
