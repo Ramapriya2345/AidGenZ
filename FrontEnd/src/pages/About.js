@@ -70,7 +70,7 @@ const About = () => {
             Together, we can create lasting change in the lives of orphaned children. Get involved today and help us support orphanages across the world.
           </p>
           <a
-            href="/donor-list"
+            href="/donor-auth"
             className="btn btn-light btn-lg text-primary animate__fadeInUp"
           >
             Donate Now

@@ -18,6 +18,7 @@ import About from "./pages/About";
 import CompleteDonationPage from "./pages/CompleteDonationPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword"; // Import ResetPassword Page
+import WhatsAppNotifications from "./pages/WhatsAppNotifications"; // Add this import
 
 function AppRoutes() {
   return (
@@ -27,6 +28,9 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
 
         <Route path="/about" element={<About />} />
+        
+        {/* Add WhatsApp Notifications Route */}
+        <Route path="/whatsapp-notifications" element={<WhatsAppNotifications />} />
 
         {/* Auth Pages */}
         <Route path="/orphanage-auth" element={<OrphanageAuth />} />

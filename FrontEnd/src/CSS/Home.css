@@ -201,6 +201,60 @@
   100% { transform: rotate(45deg) translateX(100%); }
 }
 
+/* WhatsApp Notification Link Highlighting */
+.navbar-nav .whatsapp-notification-link {
+  position: relative;
+  background: linear-gradient(90deg, rgba(37,211,102,0.15), rgba(37,211,102,0.3));
+  border-radius: 20px;
+  padding: 8px 15px !important;
+  color: #075e54 !important;
+  font-weight: 700;
+  animation: pulse-attention 2s infinite;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(37,211,102,0.4);
+}
+
+.navbar-nav .whatsapp-notification-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  transform: translateX(-100%);
+  animation: shine-effect 3s infinite;
+  border-radius: 20px;
+}
+
+.navbar-nav .whatsapp-notification-link:hover {
+  background: rgba(37,211,102,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(37,211,102,0.6);
+}
+
+.navbar-nav .whatsapp-notification-link:hover::after {
+  width: 0;
+}
+
+.navbar-nav .whatsapp-notification-link svg {
+  margin-right: 5px;
+}
+
+/* Shine animation */
+@keyframes shine-effect {
+  0% { transform: translateX(-100%); }
+  20% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Pulse animation */
+@keyframes pulse-attention {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .animated-text {
@@ -216,4 +270,3 @@
     margin-top: 10px;
   }
 }
-  
