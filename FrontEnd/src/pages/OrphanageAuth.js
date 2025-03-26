@@ -115,6 +115,9 @@ const OrphanageAuth = () => {
               required
             />
           </div>
+          <div className="forgot-password">
+            <Link to="/reset-password">Forgot Password?</Link>
+          </div>
         </div>
       );
     }
@@ -217,7 +220,7 @@ const OrphanageAuth = () => {
                 type="file"
                 name="documents"
                 onChange={handleFileChange}
-                accept=".pdf,.doc,.docx"
+                accept=".pdf"
                 required
               />
               <small>Upload registration certificate or legal documents</small>

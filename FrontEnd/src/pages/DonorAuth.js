@@ -107,6 +107,9 @@ const DonorAuth = () => {
               required
             />
           </div>
+          <div className="forgot-password">
+            <Link to="/reset-password">Forgot Password?</Link>
+          </div>
         </div>
       );
     }

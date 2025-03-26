@@ -20,23 +20,21 @@ const storageMulter = multer.memoryStorage();
 // Initialize multer with memory storage
 const upload = multer({
   storage: storageMulter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // Increase limit to 10MB to accommodate PDFs
   fileFilter: (req, file, cb) => {
-    const allowedFileTypes = /jpeg|jpg|png|gif/;
-    const extname = allowedFileTypes.test(file.originalname.toLowerCase());
-    const mimetype = allowedFileTypes.test(file.mimetype);
-
-    if (extname && mimetype) {
+    // Allow images and PDFs
+    if (file.mimetype.startsWith('image/') || 
+        file.mimetype === 'application/pdf' || 
+        file.mimetype === 'application/msword' || 
+        file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
       return cb(null, true);
     } else {
-      cb(new Error('Only images are allowed'));
+      cb(new Error('Only images and document files (PDF, DOC, DOCX) are allowed'));
     }
   }
 });
 
-
-
-// Upload image to Cloudinary
+// Upload file to Cloudinary
 const uploadToCloudinary = async (file) => {
   try {
     if (!file || !file.buffer) {
@@ -45,14 +43,18 @@ const uploadToCloudinary = async (file) => {
 
     console.log("✅ Uploading file to Cloudinary...");
     console.log("🔹 File Buffer Size:", file.buffer.length);
+    console.log("🔹 File Type:", file.mimetype);
 
-    // Convert buffer to base64 (Cloudinary supports direct upload via base64)
-    const base64Image = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+    // Convert buffer to base64
+    const base64Data = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+    
+    // Determine resource type based on mimetype
+    const resourceType = file.mimetype.startsWith('image/') ? 'image' : 'raw';
 
-    // Upload directly to Cloudinary (not using upload_stream)
-    const result = await cloudinary.uploader.upload(base64Image, {
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(base64Data, {
       folder: 'donation-system',
-      resource_type: 'image',
+      resource_type: resourceType,
     });
 
     console.log("✅ Cloudinary Upload Success:", result.secure_url);
