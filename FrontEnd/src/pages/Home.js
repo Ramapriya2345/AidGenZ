@@ -109,7 +109,7 @@ function Home() {
             <div className="col-md-4 mb-4">
               <div className="impact-card">
                 <h3 className="display-4 fw-bold text-primary">1000+</h3>
-                <p className="lead">Children Helped</p>
+                <p className="lead ">Children Helped</p>
               </div>
             </div>
             <div className="col-md-4 mb-4">
@@ -137,7 +137,7 @@ function Home() {
               <div className="category-card">
                 <i className="fas fa-tshirt mb-3"></i>
                 <h4>Clothes</h4>
-                <p>Provide warmth and comfort to children in need</p>
+                <p>Provide warmth and comfort to needy</p>
               </div>
             </div>
             <div className="col-md-4 mb-4">
@@ -159,8 +159,9 @@ function Home() {
       </section>
 
       {/* Call to Action */}
+      
       <section className="cta-section text-center py-5">
-        <div className="container">
+        <div className="container ">
           <h2 className="mb-4">Ready to Make a Difference?</h2>
           <p className="lead mb-4">Your donation can change a child's life today.</p>
           <Link to="/donor-auth" className="btn btn-primary btn-lg">Start Donating Now</Link>

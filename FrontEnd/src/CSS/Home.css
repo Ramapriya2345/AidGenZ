@@ -21,7 +21,7 @@
     url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3');
   background-size: cover;
   background-position: center;
-  color: white;
+  color: rgb(230, 250, 252);
   padding: 120px 0;
   margin-bottom: 0;
   position: relative;
@@ -30,7 +30,7 @@
 
 .impact-card {
   padding: 30px;
-  background: white;
+  background: rgb(189, 223, 249);
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
@@ -43,9 +43,10 @@
 .category-card {
   text-align: center;
   padding: 30px;
-  background: white;
+  background: rgb(255, 255, 255);
+  border: 2px solid  rgb(172, 210, 239);
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(84, 44, 44, 0.1);
   transition: transform 0.3s ease;
 }
 

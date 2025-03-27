@@ -13,7 +13,7 @@ const About = () => {
   }, []);
 
   return (
-    <div className="bg-primary text-white py-5">
+    <div className="bg-white text-black py-5">
       <div className="container text-center">
         <h1 className="display-4 mb-4 animate__fadeInUp">
           About Us
